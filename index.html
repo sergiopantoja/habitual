@@ -1,0 +1,118 @@
+<!doctype html>
+<html ng-app>
+<head>
+	<title>Daily Habits</title>
+	<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+	<script src='https://cdn.firebase.com/v0/firebase.js'></script>
+	<script type="text/javascript">
+
+	function MainCtrl($scope, $timeout) {
+		var FirebaseIO = new Firebase('http://dailyhabits.firebaseio.com');
+		
+		FirebaseIO.child('habits').on('value', function(snapshot) {
+			$timeout(function() {
+				$scope.habits = snapshot.val();
+			});
+		});
+
+		FirebaseIO.child('days').on('value', function(snapshot) {
+			$timeout(function() {
+				$scope.dateData = snapshot.val();
+			});
+		});
+
+		function dateToString(datestamp) {
+			var date = new Date(datestamp);
+
+			// add leading zeros
+			var month = ("0" + (date.getMonth() + 1)).slice(-2);
+			var day = ("0" + date.getDate()).slice(-2);
+
+			return date.getFullYear() + '-' + month + '-' + day;
+		}
+
+		$scope.addHabit = function() {
+			FirebaseIO.child('habits').push($scope.newHabit);
+			$scope.newHabit = '';
+		};
+
+		$scope.setHabit = function(date, habitId, truefalse) {
+			FirebaseIO.child('days/' + date + '/' + habitId).set(truefalse);
+		};
+
+		$scope.isCompleted = function(date, habitId) {
+			return $scope.dateData && $scope.dateData[date] && $scope.dateData[date][habitId];
+		};
+
+		$scope.getDays = function() {
+			var days = [];
+			var now = Date.now();
+			var i;
+
+			for (i = 0; i < 7; i++) {
+				// one day === 86400000 milliseconds
+				days.push(dateToString(new Date(now - i*86400000)));
+			}
+
+			$scope.days = days;
+		};
+
+		$scope.getDays();
+	}
+
+	</script>
+	<style type="text/css">
+
+	body {margin-top: 60px;}
+
+	form, input[type="text"] {margin: 0;}
+
+	.table th {text-align: center}
+
+	.completed {background-color: green;}
+	.passed {background-color: yellow;}
+
+	</style>
+</head>
+<body ng-controller="MainCtrl">
+
+<div class="container">
+	<div class="row">
+		<div class="span12">
+
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th></th>
+						<th ng-repeat="day in days">
+							{{day}}
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(habitId, habitString) in habits">
+						<td class="text-left">{{habitString}}</td>
+						<td ng-repeat="day in days"
+							ng-click="setHabit(day, habitId, !isCompleted(day, habitId))"
+							ng-class="{completed: isCompleted(day, habitId), passed: !isCompleted(day, habitId)}">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form ng-submit="addHabit()">
+								<input type="text" ng-model="newHabit" placeholder="Add a new habit..." />
+							</form>
+						</td>
+						<td colspan="{{days.length}}"></td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
