@@ -35,7 +35,8 @@
 
 		var modes = {
 			week: 7,
-			month: 30
+			month: 30,
+			now: 0
 		};
 
 		$scope.currentMode = 'week';
@@ -114,7 +115,7 @@
 	<div class="row">
 		<div class="span12">
 
-			<table class="table table-bordered table-condensed">
+			<table class="table table-bordered table-condensed" ng-show="currentMode != 'now'">
 				<thead>
 					<tr>
 						<th class="span3"></th>
@@ -143,6 +144,45 @@
 				</tbody>
 			</table>
 
+			<table class="table table-bordered" ng-show="currentMode == 'now'">
+				<thead>
+					<tr>
+						<th class="span3">&nbsp;</th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Breathing in, breathing out</td>
+						<td class="completed"></td>
+					</tr>
+					<tr>
+						<td>Moving forward, moving back</td>
+						<td class="completed"></td>
+					</tr>
+					<tr>
+						<td>Living, dying, coming, going --</td>
+						<td class="completed"></td>
+					</tr>
+					<tr>
+						<td>Like two arrows meeting in flight,</td>
+						<td class="completed"></td>
+					</tr>
+					<tr>
+						<td>In the midst of nothingness</td>
+						<td class="completed"></td>
+					</tr>
+					<tr>
+						<td>There is a road that goes directly to my true home.</td>
+						<td class="completed"></td>
+					</tr>
+					<tr>
+						<td class="muted" style="text-align: right"><small>-- Zen Master Gesshu Soko</small></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
 			<div class="gradient-overlay"></div>
 
 		</div>
@@ -151,8 +191,10 @@
 		<div class="span12 text-center">
 			View results by &nbsp;
 			<button class="btn" ng-click="changeMode('week')">Week</button>
-			&nbsp; or &nbsp;
+			&nbsp; or by &nbsp;
 			<button class="btn" ng-click="changeMode('month')">Month</button>
+			&nbsp; or by &nbsp;
+			<button class="btn" ng-click="changeMode('now')">Living in the Present Moment</button>
 		</div>
 	</div>
 </div>
