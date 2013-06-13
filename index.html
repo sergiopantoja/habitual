@@ -69,10 +69,30 @@
 
 	form, input[type="text"] {margin: 0;}
 
+	.table, .span12 {position: relative}
+
 	.table th {text-align: center}
 
 	.completed {background-color: green;}
 	.passed {background-color: yellow;}
+
+	.gradient-overlay {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,0) 12%, rgba(255,255,255,1) 100%);
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(12%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1)));
+		background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
+		background: -o-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
+		background: -ms-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
+		background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );
+
+		/* allow click-through */
+		pointer-events: none;
+	}
 
 	</style>
 </head>
@@ -109,6 +129,8 @@
 					</tr>
 				</tbody>
 			</table>
+
+			<div class="gradient-overlay"></div>
 
 		</div>
 	</div>
