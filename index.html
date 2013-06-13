@@ -33,6 +33,18 @@
 			return date.getFullYear() + '-' + month + '-' + day;
 		}
 
+		var modes = {
+			week: 7,
+			month: 30
+		};
+
+		$scope.currentMode = 'week';
+
+		$scope.changeMode = function(mode) {
+			$scope.currentMode = mode;
+			$scope.getDays();
+		}
+
 		$scope.addHabit = function() {
 			FirebaseIO.child('habits').push($scope.newHabit);
 			$scope.newHabit = '';
@@ -51,7 +63,7 @@
 			var now = Date.now();
 			var i;
 
-			for (i = 0; i < 7; i++) {
+			for (i = 0; i < modes[$scope.currentMode]; i++) {
 				// one day === 86400000 milliseconds
 				days.push(dateToString(new Date(now - i*86400000)));
 			}
@@ -105,9 +117,10 @@
 			<table class="table table-bordered table-condensed">
 				<thead>
 					<tr>
-						<th></th>
+						<th class="span3"></th>
 						<th ng-repeat="day in days">
-							{{day}}
+							<span ng-show="currentMode == 'week'">{{day}}</span>
+							<span ng-show="currentMode != 'week'">&nbsp;</span>
 						</th>
 					</tr>
 				</thead>
@@ -132,6 +145,14 @@
 
 			<div class="gradient-overlay"></div>
 
+		</div>
+	</div>
+	<div class="row">
+		<div class="span12 text-center">
+			View results by &nbsp;
+			<button class="btn" ng-click="changeMode('week')">Week</button>
+			&nbsp; or &nbsp;
+			<button class="btn" ng-click="changeMode('month')">Month</button>
 		</div>
 	</div>
 </div>
