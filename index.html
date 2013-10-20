@@ -1,27 +1,21 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="habits">
 <head>
 	<title>Daily Habits</title>
 	<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
 	<script src='https://cdn.firebase.com/v0/firebase.js'></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/0.3.0/angularfire.min.js"></script>
 	<script type="text/javascript">
 
-	function MainCtrl($scope, $timeout) {
-		var FirebaseIO = new Firebase('http://dailyhabits.firebaseio.com');
-		
-		FirebaseIO.child('habits').on('value', function(snapshot) {
-			$timeout(function() {
-				$scope.habits = snapshot.val();
-			});
-		});
+	angular.module('habits', ['firebase']);
+	angular.module('habits').controller('MainCtrl', ['$scope', 'angularFire',
+	function($scope, angularFire) {
+		var ref = new Firebase('http://dailyhabits.firebaseio.com');
 
-		FirebaseIO.child('days').on('value', function(snapshot) {
-			$timeout(function() {
-				$scope.dateData = snapshot.val();
-			});
-		});
+		angularFire(ref.child('habits'), $scope, 'habits');
+		angularFire(ref.child('days'),   $scope, 'dateData');
 
 		function dateToString(datestamp) {
 			var date = new Date(datestamp);
@@ -47,12 +41,12 @@
 		}
 
 		$scope.addHabit = function() {
-			FirebaseIO.child('habits').push($scope.newHabit);
+			ref.child('habits').push($scope.newHabit);
 			$scope.newHabit = '';
 		};
 
 		$scope.setHabit = function(date, habitId, truefalse) {
-			FirebaseIO.child('days/' + date + '/' + habitId).set(truefalse);
+			ref.child('days/' + date + '/' + habitId).set(truefalse);
 		};
 
 		$scope.isCompleted = function(date, habitId) {
@@ -73,7 +67,7 @@
 		};
 
 		$scope.getDays();
-	}
+	}]);
 
 	</script>
 	<style type="text/css">
