@@ -2,7 +2,7 @@
 <html ng-app="habits">
 <head>
     <title>Daily Habits</title>
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="assets/stylesheets/bootstrap.min.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js"></script>
     <script src='https://cdn.firebase.com/v0/firebase.js'></script>
@@ -76,9 +76,14 @@
 
     form, input[type="text"] {margin: 0;}
 
-    .table, .span12 {position: relative}
+    .table, .col-md-12 {position: relative}
 
     .table th {text-align: center}
+
+    .table-bordered>thead>tr>th,
+    .table-bordered>thead>tr>td {
+        border-bottom-width: 0px;
+    }
 
     .completed {background-color: green;}
     .passed {background-color: yellow;}
@@ -107,12 +112,12 @@
 
 <div class="container">
     <div class="row">
-        <div class="span12">
+        <div class="col-md-12">
 
-            <table class="table table-bordered table-condensed" ng-show="currentMode != 'now'">
+            <table class="table table-bordered" ng-show="currentMode != 'now'">
                 <thead>
                     <tr>
-                        <th class="span3"></th>
+                        <th class="col-md-3"></th>
                         <th ng-repeat="day in days">
                             <span ng-show="currentMode == 'week'">{{$first ? 'Today' : day | date:'MMM d'}}</span>
                             <span ng-show="currentMode != 'week'">&nbsp;</span>
@@ -130,7 +135,7 @@
                     <tr>
                         <td>
                             <form ng-submit="addHabit()">
-                                <input type="text" ng-model="newHabit" placeholder="Add a new habit..." />
+                                <input type="text" class="form-control" ng-model="newHabit" placeholder="Add a new habit..." />
                             </form>
                         </td>
                         <td colspan="{{days.length}}"></td>
@@ -141,7 +146,7 @@
             <table class="table table-bordered" ng-show="currentMode == 'now'">
                 <thead>
                     <tr>
-                        <th class="span3">&nbsp;</th>
+                        <th class="col-md-3">&nbsp;</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -184,11 +189,11 @@
     <div class="row">
         <div class="span12 text-center">
             View results by &nbsp;
-            <button class="btn" ng-click="changeMode('week')">Week</button>
+            <button class="btn btn-default" ng-click="changeMode('week')">Week</button>
             &nbsp; or by &nbsp;
-            <button class="btn" ng-click="changeMode('month')">Month</button>
+            <button class="btn btn-default" ng-click="changeMode('month')">Month</button>
             &nbsp; or by &nbsp;
-            <button class="btn" ng-click="changeMode('now')">Living in the Present Moment</button>
+            <button class="btn btn-default" ng-click="changeMode('now')">Living in the Present Moment</button>
         </div>
     </div>
 </div>
