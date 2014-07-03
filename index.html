@@ -1,197 +1,198 @@
 <!doctype html>
 <html ng-app="habits">
 <head>
-	<title>Daily Habits</title>
-	<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js"></script>
-	<script src='https://cdn.firebase.com/v0/firebase.js'></script>
-	<script src="https://cdn.firebase.com/libs/angularfire/0.3.0/angularfire.min.js"></script>
-	<script type="text/javascript">
+    <title>Daily Habits</title>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js"></script>
+    <script src='https://cdn.firebase.com/v0/firebase.js'></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/0.3.0/angularfire.min.js"></script>
+    <script type="text/javascript">
 
-	angular.module('habits', ['firebase']);
-	angular.module('habits').controller('MainCtrl', ['$scope', 'angularFire',
-	function($scope, angularFire) {
-		var ref = new Firebase('http://dailyhabits.firebaseio.com');
+    angular.module('habits', ['firebase']);
+    angular.module('habits').controller('MainCtrl', ['$scope', 'angularFire',
+    function($scope, angularFire) {
+        var ref = new Firebase('http://dailyhabits.firebaseio.com');
 
-		angularFire(ref.child('habits'), $scope, 'habits');
-		angularFire(ref.child('days'),   $scope, 'dateData');
+        angularFire(ref.child('habits'), $scope, 'habits');
+        angularFire(ref.child('days'),   $scope, 'dateData');
 
-		function dateToString(datestamp) {
-			var date = new Date(datestamp);
+        function dateToString(datestamp) {
+            var date = new Date(datestamp);
 
-			// add leading zeros
-			var month = ("0" + (date.getMonth() + 1)).slice(-2);
-			var day = ("0" + date.getDate()).slice(-2);
+            // add leading zeros
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2);
 
-			return date.getFullYear() + '-' + month + '-' + day;
-		}
+            return date.getFullYear() + '-' + month + '-' + day;
+        }
 
-		var modes = {
-			week: 7,
-			month: 30,
-			now: 0
-		};
+        var modes = {
+            week: 7,
+            month: 30,
+            now: 0
+        };
 
-		$scope.currentMode = 'week';
+        $scope.currentMode = 'week';
 
-		$scope.changeMode = function(mode) {
-			$scope.currentMode = mode;
-			$scope.getDays();
-		}
+        $scope.changeMode = function(mode) {
+            $scope.currentMode = mode;
+            $scope.getDays();
+        }
 
-		$scope.addHabit = function() {
-			ref.child('habits').push($scope.newHabit);
-			$scope.newHabit = '';
-		};
+        $scope.addHabit = function() {
+            ref.child('habits').push($scope.newHabit);
+            $scope.newHabit = '';
+        };
 
-		$scope.setHabit = function(date, habitId, truefalse) {
-			ref.child('days/' + date + '/' + habitId).set(truefalse);
-		};
+        $scope.setHabit = function(date, habitId, truefalse) {
+            ref.child('days/' + date + '/' + habitId).set(truefalse);
+        };
 
-		$scope.isCompleted = function(date, habitId) {
-			return $scope.dateData && $scope.dateData[date] && $scope.dateData[date][habitId];
-		};
+        $scope.isCompleted = function(date, habitId) {
+            return $scope.dateData && $scope.dateData[date] && $scope.dateData[date][habitId];
+        };
 
-		$scope.getDays = function() {
-			var days = [];
-			var now = Date.now();
-			var i;
+        $scope.getDays = function() {
+            var days = [];
+            var now = Date.now();
+            var i;
 
-			for (i = 0; i < modes[$scope.currentMode]; i++) {
-				// one day === 86400000 milliseconds
-				days.push(dateToString(new Date(now - i*86400000)));
-			}
+            for (i = 0; i < modes[$scope.currentMode]; i++) {
+                // one day === 86400000 milliseconds
+                days.push(dateToString(new Date(now - i*86400000)));
+            }
 
-			$scope.days = days;
-		};
+            $scope.days = days;
+        };
 
-		$scope.getDays();
-	}]);
+        $scope.getDays();
+    }]);
 
-	</script>
-	<style type="text/css">
+    </script>
+    <style type="text/css">
 
-	body {margin-top: 30px;}
+    body {margin-top: 30px;}
 
-	form, input[type="text"] {margin: 0;}
+    form, input[type="text"] {margin: 0;}
 
-	.table, .span12 {position: relative}
+    .table, .span12 {position: relative}
 
-	.table th {text-align: center}
+    .table th {text-align: center}
 
-	.completed {background-color: green;}
-	.passed {background-color: yellow;}
+    .completed {background-color: green;}
+    .passed {background-color: yellow;}
 
-	.gradient-overlay {
-		position: absolute;
-		height: 100%;
-		width: 100%;
-		top: 0;
-		left: 0;
-		background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,0) 12%, rgba(255,255,255,1) 100%);
-		background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(12%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1)));
-		background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
-		background: -o-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
-		background: -ms-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
-		background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );
+    .gradient-overlay {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,0) 12%, rgba(255,255,255,1) 100%);
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(12%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1)));
+        background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
+        background: -o-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
+        background: -ms-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
+        background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );
 
-		/* allow click-through */
-		pointer-events: none;
-	}
+        /* allow click-through */
+        pointer-events: none;
+    }
 
-	</style>
+    </style>
 </head>
 <body ng-controller="MainCtrl">
 
 <div class="container">
-	<div class="row">
-		<div class="span12">
+    <div class="row">
+        <div class="span12">
 
-			<table class="table table-bordered table-condensed" ng-show="currentMode != 'now'">
-				<thead>
-					<tr>
-						<th class="span3"></th>
-						<th ng-repeat="day in days">
-							<span ng-show="currentMode == 'week'">{{$first ? 'Today' : day | date:'MMM d'}}</span>
-							<span ng-show="currentMode != 'week'">&nbsp;</span>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="(habitId, habitString) in habits">
-						<td class="text-left">{{habitString}}</td>
-						<td ng-repeat="day in days"
-							ng-click="setHabit(day, habitId, !isCompleted(day, habitId))"
-							ng-class="{completed: isCompleted(day, habitId), passed: !isCompleted(day, habitId)}">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<form ng-submit="addHabit()">
-								<input type="text" ng-model="newHabit" placeholder="Add a new habit..." />
-							</form>
-						</td>
-						<td colspan="{{days.length}}"></td>
-					</tr>
-				</tbody>
-			</table>
+            <table class="table table-bordered table-condensed" ng-show="currentMode != 'now'">
+                <thead>
+                    <tr>
+                        <th class="span3"></th>
+                        <th ng-repeat="day in days">
+                            <span ng-show="currentMode == 'week'">{{$first ? 'Today' : day | date:'MMM d'}}</span>
+                            <span ng-show="currentMode != 'week'">&nbsp;</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(habitId, habitString) in habits">
+                        <td class="text-left">{{habitString}}</td>
+                        <td ng-repeat="day in days"
+                            ng-click="setHabit(day, habitId, !isCompleted(day, habitId))"
+                            ng-class="{completed: isCompleted(day, habitId), passed: !isCompleted(day, habitId)}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form ng-submit="addHabit()">
+                                <input type="text" ng-model="newHabit" placeholder="Add a new habit..." />
+                            </form>
+                        </td>
+                        <td colspan="{{days.length}}"></td>
+                    </tr>
+                </tbody>
+            </table>
 
-			<table class="table table-bordered" ng-show="currentMode == 'now'">
-				<thead>
-					<tr>
-						<th class="span3">&nbsp;</th>
-						<th>&nbsp;</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Breathing in, breathing out</td>
-						<td class="completed"></td>
-					</tr>
-					<tr>
-						<td>Moving forward, moving back</td>
-						<td class="completed"></td>
-					</tr>
-					<tr>
-						<td>Living, dying, coming, going --</td>
-						<td class="completed"></td>
-					</tr>
-					<tr>
-						<td>Like two arrows meeting in flight,</td>
-						<td class="completed"></td>
-					</tr>
-					<tr>
-						<td>In the midst of nothingness</td>
-						<td class="completed"></td>
-					</tr>
-					<tr>
-						<td>There is a road that goes directly to my true home.</td>
-						<td class="completed"></td>
-					</tr>
-					<tr>
-						<td class="muted" style="text-align: right"><small>-- Zen Master Gesshu Soko</small></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
+            <table class="table table-bordered" ng-show="currentMode == 'now'">
+                <thead>
+                    <tr>
+                        <th class="span3">&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Breathing in, breathing out</td>
+                        <td class="completed"></td>
+                    </tr>
+                    <tr>
+                        <td>Moving forward, moving back</td>
+                        <td class="completed"></td>
+                    </tr>
+                    <tr>
+                        <td>Living, dying, coming, going --</td>
+                        <td class="completed"></td>
+                    </tr>
+                    <tr>
+                        <td>Like two arrows meeting in flight,</td>
+                        <td class="completed"></td>
+                    </tr>
+                    <tr>
+                        <td>In the midst of nothingness</td>
+                        <td class="completed"></td>
+                    </tr>
+                    <tr>
+                        <td>There is a road that goes directly to my true home.</td>
+                        <td class="completed"></td>
+                    </tr>
+                    <tr>
+                        <td class="muted" style="text-align: right"><small>-- Zen Master Gesshu Soko</small></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
 
-			<div class="gradient-overlay"></div>
+            <div class="gradient-overlay"></div>
 
-		</div>
-	</div>
-	<div class="row">
-		<div class="span12 text-center">
-			View results by &nbsp;
-			<button class="btn" ng-click="changeMode('week')">Week</button>
-			&nbsp; or by &nbsp;
-			<button class="btn" ng-click="changeMode('month')">Month</button>
-			&nbsp; or by &nbsp;
-			<button class="btn" ng-click="changeMode('now')">Living in the Present Moment</button>
-		</div>
-	</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12 text-center">
+            View results by &nbsp;
+            <button class="btn" ng-click="changeMode('week')">Week</button>
+            &nbsp; or by &nbsp;
+            <button class="btn" ng-click="changeMode('month')">Month</button>
+            &nbsp; or by &nbsp;
+            <button class="btn" ng-click="changeMode('now')">Living in the Present Moment</button>
+        </div>
+    </div>
 </div>
 
 </body>
 </html>
+
