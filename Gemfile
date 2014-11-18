@@ -1,40 +1,42 @@
 source 'https://rubygems.org'
 
+ruby '2.1.5'
+gem 'rails', '4.1.8'
+# gem 'rails', github: 'rails/rails' # bundle edge Rails instead
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.7'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.3'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer',  platforms: :ruby
+gem 'active_link_to' # helper for setting the 'active' class to links
+gem 'active_model_serializers', '~> 0.8.1' # cleaner way to render JSON objects
+gem 'bcrypt', '~> 3.1.7' # let ActiveModel use has_secure_password
+gem 'font-awesome-rails' # Font Awesome Rails engine for use with the asset pipeline
+gem 'haml' # replacement for ERB and HTML templates
+gem 'jbuilder', '~> 2.0' # build JSON APIs with ease
+gem 'jquery-rails' # use jQuery as the Javascript library
+gem 'pg' # postgres database
+gem 'record_with_operator' # created/updated/deleted_by for ActiveRecord objects
+gem 'turbolinks' # make following links faster for the end-user
 
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0',          group: :doc
+group :assets do
+  gem 'coffee-rails', '~> 4.0.0' # compile .coffee assets and views
+  gem 'sass-rails', '~> 4.0.3' # use SCSS for stylesheets
+  gem 'uglifier', '>= 1.3.0' # compressor for JavaScript assets
+end
 
-# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem 'spring',        group: :development
+group :doc do
+  gem 'sdoc', '~> 0.4.0' # bundle exec rake doc:rails generates the API under doc/api
+end
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-
+group :development, :test, :offline do
+  gem 'annotate', '>=2.6.0' # annotate ActiveRecord models
+  gem 'awesome_print' # pretty print Ruby objects with color and indentation
+  gem 'better_errors' # better error pages
+  gem 'binding_of_caller' # enable Better Errors' advanced features
+  gem 'byebug' # for debugging Ruby 2.0.0 or newer
+  gem 'cucumber-rails', require: false # testing framework to describe app behavior
+  gem 'database_cleaner' # ensure clean DB for testing, recommended for cucumber
+  gem 'hirb' # mini view framework for console/irb. in sc do 'Hirb.enable'
+  gem 'hirb-unicode'
+  gem 'railroady' # model and controller UML class diagram generator
+  gem 'rspec-rails', '~> 3.0.0' # testing framework to describe object behavior
+  gem 'spring' # speed up development keeping the app running in the background
+  gem 'sqlite3' # database for Active Record
+end
