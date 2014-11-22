@@ -7,6 +7,7 @@ gem 'rails', '4.1.8'
 gem 'active_link_to' # helper for setting the 'active' class to links
 gem 'active_model_serializers', '~> 0.8.1' # cleaner way to render JSON objects
 gem 'bcrypt', '~> 3.1.7' # let ActiveModel use has_secure_password
+gem 'devise' # user authentication
 gem 'font-awesome-rails' # Font Awesome Rails engine for use with the asset pipeline
 gem 'haml' # replacement for ERB and HTML templates
 gem 'jbuilder', '~> 2.0' # build JSON APIs with ease
