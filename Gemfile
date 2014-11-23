@@ -11,7 +11,6 @@ gem 'devise' # user authentication
 gem 'font-awesome-rails' # Font Awesome Rails engine for use with the asset pipeline
 gem 'haml' # replacement for ERB and HTML templates
 gem 'jbuilder', '~> 2.0' # build JSON APIs with ease
-gem 'jquery-rails' # use jQuery as the Javascript library
 gem 'pg' # postgres database
 gem 'record_with_operator' # created/updated/deleted_by for ActiveRecord objects
 gem 'turbolinks' # make following links faster for the end-user
