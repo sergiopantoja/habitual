@@ -20,9 +20,7 @@
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           %ul.nav.navbar-nav
             %li.active
-              %a(href="#")
-                Habits
-                %span.sr-only (current)
+              = link_to 'Habits', habits_path
             %li
               %a(href="#") Wishlist
           %ul.nav.navbar-nav.navbar-right
