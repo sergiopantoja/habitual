@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141122022856) do
+ActiveRecord::Schema.define(version: 20150104022301) do
 
-  create_table "habits", force: true do |t|
+  create_table "habits", force: :cascade do |t|
     t.string   "name",                                            null: false
     t.integer  "recurrence",                          default: 0
     t.decimal  "reward",     precision: 10, scale: 2
@@ -21,7 +21,15 @@ ActiveRecord::Schema.define(version: 20141122022856) do
     t.datetime "updated_at"
   end
 
-  create_table "users", force: true do |t|
+  create_table "rewards", force: :cascade do |t|
+    t.string   "name",                                null: false
+    t.string   "url"
+    t.decimal  "cost",       precision: 10, scale: 2
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
