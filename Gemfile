@@ -10,6 +10,7 @@ gem 'bcrypt', '~> 3.1.9' # let ActiveModel use has_secure_password
 gem 'devise' # user authentication
 gem 'font-awesome-rails' # Font Awesome Rails engine for use with the asset pipeline
 gem 'haml' # replacement for ERB and HTML templates
+gem 'haml-rails', '~> 0.8' # adds some HAML extras to Rails for us
 gem 'pg' # postgres database
 gem 'record_with_operator' # created/updated/deleted_by for ActiveRecord objects
 gem 'turbolinks' # make following links faster for the end-user
